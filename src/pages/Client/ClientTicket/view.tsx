@@ -294,7 +294,7 @@ export const ClientTicket: React.FC = () => {
     setIsModalOpen(true);
   };
   return (
-    <div className="flex-1 p-8 overflow-auto">
+    <div className="flex-1 overflow-auto">
       <div className="space-y-8">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-semibold">Tickets</h2>
