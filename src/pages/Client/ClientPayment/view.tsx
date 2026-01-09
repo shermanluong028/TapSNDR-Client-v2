@@ -215,7 +215,7 @@ const PaymentSection: React.FC<{
           </h2>
         </div>
 
-        <div>
+        <div className="text-center">
           <div
             className={`text-sm ${
               isDarkMode ? "text-gray-400" : "text-gray-500"
