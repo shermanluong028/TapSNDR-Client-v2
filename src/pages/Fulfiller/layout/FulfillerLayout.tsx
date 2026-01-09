@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Panel from "../../../components/Panel";
-import { useTheme } from "../../../contexts/ThemeContext";
-import { BaseLayout } from "../../../layout/BaseLayout";
-import { IoCard } from "react-icons/io5";
-import { HiDocumentDuplicate } from "react-icons/hi2";
+import Panel from "@/components/Panel";
+import { useTheme } from "@/contexts/ThemeContext";
+import { BaseLayout } from "@/layout/BaseLayout";
+import { HiOutlineTicket } from "react-icons/hi2";
+import { GoArrowSwitch } from "react-icons/go";
 
 interface FulfillerLayoutProps {
   children: React.ReactNode;
@@ -15,16 +15,16 @@ export const FulfillerLayout: React.FC<FulfillerLayoutProps> = ({ children }) =>
   const panelItems = [
     {
       category: "Fulfiller",
-      name: "Payments",
+      name: "Transactions",
       path: "/fulfiller/payment",
-      icon: <IoCard size={24} className="mr-2" />,
+      icon: <GoArrowSwitch size={24} className="mr-2" />,
       isActive: location.pathname.includes("/payment"),
     },
     {
       category: "Fulfiller",
       name: "Tickets",
       path: "/fulfiller/ticket",
-      icon: <HiDocumentDuplicate size={24} className="mr-2" />,
+      icon: <HiOutlineTicket size={24} className="mr-2" />,
       isActive: location.pathname.includes("/ticket"),
     },
   ];

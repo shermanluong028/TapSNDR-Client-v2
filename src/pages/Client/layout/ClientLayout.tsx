@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Panel from "../../../components/Panel";
-import { useTheme } from "../../../contexts/ThemeContext";
-import { BaseLayout } from "../../../layout/BaseLayout";
-import { IoCard } from "react-icons/io5";
-import { HiDocumentDuplicate } from "react-icons/hi2";
-import { HiOutlineMenu } from "react-icons/hi";
+import Panel from "@/components/Panel";
+import { useTheme } from "@/contexts/ThemeContext";
+import { BaseLayout } from "@/layout/BaseLayout";
+import { HiOutlineTicket } from "react-icons/hi2";
+import { GoArrowSwitch } from "react-icons/go";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -18,16 +17,16 @@ export const ClientLayout: React.FC<ClientLayoutProps> = ({ children }) => {
   const panelItems = [
     {
       category: "Client",
-      name: "Payments",
+      name: "Transactions",
       path: "/client/payment",
-      icon: <IoCard size={24} className="mr-2" />,
+      icon: <GoArrowSwitch size={24} className="mr-2" />,
       isActive: location.pathname.includes("/payment"),
     },
     {
       category: "Client",
       name: "Tickets",
       path: "/client/ticket",
-      icon: <HiDocumentDuplicate size={24} className="mr-2" />,
+      icon: <HiOutlineTicket size={24} className="mr-2" />,
       isActive: location.pathname.includes("/ticket"),
     },
   ];
