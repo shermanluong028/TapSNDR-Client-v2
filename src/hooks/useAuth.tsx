@@ -78,11 +78,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error("Invalid response from server");
       }
 
-      const { ...userData } = response;
-      setUser({ ...userData, email: userData.email || "" });
+      // const { ...userData } = response;
+      // setUser({ ...userData, email: userData.email || "" });
       // setIsAuthenticated(true);
       // localStorage.setItem("token", accessToken);
-      localStorage.setItem("user", JSON.stringify(userData));
+      // localStorage.setItem("user", JSON.stringify(userData));
     } catch (error: any) {
       console.log({error})
       throw new Error(`Registration failed. ${error.response.data.message}`);
