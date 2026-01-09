@@ -1290,7 +1290,7 @@ export const FulfillerTicket: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 p-8 overflow-auto">
+    <div className="flex-1 overflow-auto">
       <TicketSection
         isDarkMode={isDarkMode}
         currentBalance={currentBalance}
