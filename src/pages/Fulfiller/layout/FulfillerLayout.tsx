@@ -36,7 +36,7 @@ export const FulfillerLayout: React.FC<FulfillerLayoutProps> = ({ children }) =>
           items={panelItems}
           onItemClicked={() => setVisiblePanel(false)}
         />
-        {children}
+        <div className="flex-1 md:ml-0 p-4 w-full">{children}</div>
       </div>
     </BaseLayout>
   );
