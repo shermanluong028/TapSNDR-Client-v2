@@ -346,6 +346,7 @@ const PaymentSection: React.FC<{
                       className={`p-4 ${
                         isDarkMode ? "text-gray-300" : "text-gray-900"
                       }`}
+                      align="center"
                     >
                       {format(new Date(transaction.created_at), "dd/MM/yyyy")}
                     </td>
@@ -353,6 +354,7 @@ const PaymentSection: React.FC<{
                       className={`p-4 font-medium ${
                         isDarkMode ? "text-gray-300" : "text-gray-900"
                       }`}
+                      align="center"
                     >
                       {transaction.transaction_type}
                     </td>
@@ -360,6 +362,7 @@ const PaymentSection: React.FC<{
                       className={`p-4 font-medium ${
                         isDarkMode ? "text-gray-300" : "text-gray-900"
                       }`}
+                      align="center"
                     >
                       {transaction.transaction_type === "deposit" || transaction.transaction_type === "credit" ? (
                         <span className="text-green-500">
@@ -375,6 +378,7 @@ const PaymentSection: React.FC<{
                       className={`p-4 ${
                         isDarkMode ? "text-gray-300" : "text-gray-900"
                       }`}
+                      align="center"
                     >
                       {transaction.description}
                     </td>
@@ -382,6 +386,7 @@ const PaymentSection: React.FC<{
                       className={`p-4 font-mono ${
                         isDarkMode ? "text-gray-300" : "text-gray-900"
                       }`}
+                      align="center"
                     >
                       {transaction.transaction_hash || "-"}
                     </td>
