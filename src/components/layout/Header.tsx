@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onBarClicked }) => {
               <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white">
                 <div className="w-4 h-4 bg-white/30 rounded-full"></div>
               </div>
-              <span className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>Tapsndr</span>
+              <span className={`text-xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>TapSNDR</span>
             </div>
             <button
               className={`md:hidden ${isDarkMode ? "text-gray-400 hover:text-white" : "text-gray-500 hover:text-gray-900"} relative`}
