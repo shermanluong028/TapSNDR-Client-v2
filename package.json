@@ -15,6 +15,7 @@
     "@tailwindcss/vite": "^4.1.0",
     "@tanstack/react-query": "^5.71.1",
     "axios": "^1.8.4",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "ethers": "^6.7.1",
