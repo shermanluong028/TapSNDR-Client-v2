@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 import { Form } from "@/components/form/Form";
 
@@ -38,7 +37,7 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
     })();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     onLoadingChanged?.(true);
     try {
       const resData = await settingsService.updateSettings({
@@ -49,13 +48,16 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
         showAlert("error", resData.message);
         return;
       }
+      if (!settings?.id) {
+        setSettings((prev) => ({ ...prev, id: resData.data.id }));
+      }
       showAlert("success", "Saved");
     } catch (error) {
       console.error(error);
     } finally {
       onLoadingChanged?.(false);
     }
-  };
+  }, [settings, showAlert, onLoadingChanged]);
 
   return (
     <div className="mt-4 space-y-3">
