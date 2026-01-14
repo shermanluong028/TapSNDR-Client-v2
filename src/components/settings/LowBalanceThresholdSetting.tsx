@@ -66,14 +66,10 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
           placeholder="e.g. 50"
           value={settings?.low_balance_threshold ?? ""}
           onChange={(e) =>
-            setSettings((prev) =>
-              prev
-                ? {
-                    ...prev,
-                    low_balance_threshold: Number(e.target.value),
-                  }
-                : prev
-            )
+            setSettings((prev) => ({
+              ...prev,
+              low_balance_threshold: Number(e.target.value),
+            }))
           }
         />
         <div className={`text-xs mt-1 ${isDarkMode ? "text-gray-500" : "text-gray-500"}`}>
