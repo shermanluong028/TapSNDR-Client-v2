@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useAlert } from "../../../contexts/AlertContext";
-import { useTheme } from "../../../contexts/ThemeContext";
-import {
-  ticketService,
-  Ticket as ApiTicket,
-} from "../../../services/ticket.service";
-import {
-  walletService,
-  Wallet,
-  CryptoTransaction,
-} from "../../../services/wallet.service";
-import { DepositModal } from "../../../components/DepositModal";
-import WithdrawModal from "../../../components/WithdrawModal";
+import { Link } from "react-router-dom";
+import { useAlert } from "@/contexts/AlertContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { ticketService, Ticket as ApiTicket } from "@/services/ticket.service";
+import { walletService, Wallet, CryptoTransaction } from "@/services/wallet.service";
+import { DepositModal } from "@/components/DepositModal";
+import WithdrawModal from "@/components/WithdrawModal";
 import { format } from "date-fns";
-import { useWallet } from "../../../components/wallet/wallet-provider";
+import { useWallet } from "@/components/wallet/wallet-provider";
 import { Loader2 } from "lucide-react";
-import { formatAddress } from "../../../utils/utils";
-import { useAuth } from "../../../hooks/useAuth";
-import { User } from "../../../services/auth.service";
-import { sendTelegramMessage } from "../../../services/telegram.service";
+import { formatAddress } from "@/utils/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { User } from "@/services/auth.service";
 
 interface Transaction {
   date: string;
@@ -65,49 +58,32 @@ const PaymentSection: React.FC<{
   cryptoTransactions,
   isCryptoLoading,
   walletContext,
-  showAlert
+  showAlert,
 }) => {
-    return (
+  return (
     <div className="space-y-8">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-semibold">Transactions</h2>
         {/* <span className="text-sm text-gray-500">Last updated: 12:13:00 AM</span> */}
       </div>
-      <div className="flex gap-4 flex-wrap">
+      <div className="flex gap-4 flex-wrap mb-2">
         <div className="relative">
           {walletContext?.isConnected ? (
             <button
               onClick={walletContext?.disconnectWallet}
               className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
-                isDarkMode
-                  ? "bg-[#1F2937] text-gray-200 hover:bg-gray-800"
-                  : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                isDarkMode ? "bg-[#1F2937] text-gray-200 hover:bg-gray-800" : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
               }`}
             >
-              <svg
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
                   d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
                 />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M22 8H2"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 12h0"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M22 8H2" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12h0" />
               </svg>
               Disconnect Wallet
               {formatAddress(walletContext?.account!)}
@@ -116,43 +92,26 @@ const PaymentSection: React.FC<{
             <button
               onClick={() => {
                 try {
-                  walletContext?.connectWallet()                  
+                  walletContext?.connectWallet();
                 } catch (error) {
-                  console.log({error})
+                  console.log({ error });
                   showAlert("error", "Failed to connect wallet");
                 }
               }}
               disabled={walletContext?.isConnecting}
               className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
-                isDarkMode
-                  ? "bg-[#1F2937] text-gray-200 hover:bg-gray-800"
-                  : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                isDarkMode ? "bg-[#1F2937] text-gray-200 hover:bg-gray-800" : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
               }`}
             >
-              <svg
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-              >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
                   d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
                 />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M22 8H2"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 12h0"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M22 8H2" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12h0" />
               </svg>
               {walletContext?.isConnecting ? (
                 <>
@@ -169,9 +128,7 @@ const PaymentSection: React.FC<{
         <button
           onClick={onDeposit}
           className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
-            isDarkMode
-              ? "bg-green-600 text-gray-700 hover:bg-green-700"
-              : "bg-green-500 text-gray-700 hover:bg-green-600"
+            isDarkMode ? "bg-green-600 text-gray-700 hover:bg-green-700" : "bg-green-500 text-gray-700 hover:bg-green-600"
           }`}
         >
           <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -185,20 +142,18 @@ const PaymentSection: React.FC<{
         </button>
       </div>
 
+      <div className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+        You can adjust your low-balance notification threshold in{" "}
+        <Link to="/client/settings" className="underline">
+          Settings
+        </Link>
+        .
+      </div>
+
       {/* Accounts Section */}
-      <div
-        className={`${
-          isDarkMode ? "bg-[#1F2937]" : "bg-white"
-        } rounded-xl p-6 ${isDarkMode ? "" : "shadow-sm"}`}
-      >
+      <div className={`${isDarkMode ? "bg-[#1F2937]" : "bg-white"} rounded-xl p-6 ${isDarkMode ? "" : "shadow-sm"}`}>
         <div className="flex items-center gap-2 mb-6">
-          <svg
-            className={`w-5 h-5 ${
-              isDarkMode ? "text-gray-300" : "text-gray-600"
-            }`}
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
+          <svg className={`w-5 h-5 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`} viewBox="0 0 20 20" fill="currentColor">
             <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
             <path
               fillRule="evenodd"
@@ -206,48 +161,20 @@ const PaymentSection: React.FC<{
               clipRule="evenodd"
             />
           </svg>
-          <h2
-            className={`text-xl font-semibold ${
-              isDarkMode ? "text-white" : "text-gray-900"
-            }`}
-          >
-            Accounts
-          </h2>
+          <h2 className={`text-xl font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>Accounts</h2>
         </div>
 
         <div className="text-center">
-          <div
-            className={`text-sm ${
-              isDarkMode ? "text-gray-400" : "text-gray-500"
-            }`}
-          >
-            Total Balance
-          </div>
-          <div
-            className={`text-2xl font-bold ${
-              isDarkMode ? "text-white" : "text-gray-900"
-            }`}
-          >
-            {balance.toLocaleString()} USDC
-          </div>
+          <div className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Total Balance</div>
+          <div className={`text-2xl font-bold ${isDarkMode ? "text-white" : "text-gray-900"}`}>{balance.toLocaleString()} USDC</div>
         </div>
       </div>
 
       {/* Recent Transactions Section */}
-      <div
-        className={`${
-          isDarkMode ? "bg-[#1F2937]" : "bg-white"
-        } rounded-xl p-6 ${isDarkMode ? "" : "shadow-sm"}`}
-      >
+      <div className={`${isDarkMode ? "bg-[#1F2937]" : "bg-white"} rounded-xl p-6 ${isDarkMode ? "" : "shadow-sm"}`}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <svg
-              className={`w-5 h-5 ${
-                isDarkMode ? "text-gray-300" : "text-gray-600"
-              }`}
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
+            <svg className={`w-5 h-5 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`} viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
                 d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
@@ -255,29 +182,11 @@ const PaymentSection: React.FC<{
               />
             </svg>
             <div>
-              <h2
-                className={`text-xl font-semibold ${
-                  isDarkMode ? "text-white" : "text-gray-900"
-                }`}
-              >
-                Recent Transactions
-              </h2>
-              <div
-                className={`text-sm ${
-                  isDarkMode ? "text-gray-400" : "text-gray-500"
-                }`}
-              >
-                {cryptoTransactions.length} transactions
-              </div>
+              <h2 className={`text-xl font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>Recent Transactions</h2>
+              <div className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{cryptoTransactions.length} transactions</div>
             </div>
           </div>
-          <div
-            className={`text-sm ${
-              isDarkMode ? "text-gray-400" : "text-gray-500"
-            }`}
-          >
-            {/* This Month */}
-          </div>
+          <div className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{/* This Month */}</div>
         </div>
 
         <div className="overflow-x-auto">
@@ -286,108 +195,38 @@ const PaymentSection: React.FC<{
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
             </div>
           ) : cryptoTransactions.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              No transactions found
-            </div>
+            <div className="text-center py-8 text-gray-500">No transactions found</div>
           ) : (
             <table className="w-full">
               <thead>
                 <tr>
-                  <th
-                    className={`p-4 text-center ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Date
-                  </th>
-                  <th
-                    className={`p-4 text-center ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Type
-                  </th>
-                  <th
-                    className={`p-4 text-center ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Amount
-                  </th>
-                  <th
-                    className={`p-4 text-center ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Description
-                  </th>
-                  <th
-                    className={`p-4 text-center ${
-                      isDarkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
-                  >
-                    Transaction Hash
-                  </th>
+                  <th className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Date</th>
+                  <th className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Type</th>
+                  <th className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Amount</th>
+                  <th className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Description</th>
+                  <th className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>Transaction Hash</th>
                 </tr>
               </thead>
-              <tbody
-                className={`divide-y ${
-                  isDarkMode ? "divide-gray-700" : "divide-gray-100"
-                }`}
-              >
+              <tbody className={`divide-y ${isDarkMode ? "divide-gray-700" : "divide-gray-100"}`}>
                 {cryptoTransactions.map((transaction) => (
-                  <tr
-                    key={transaction.id}
-                    className={`${
-                      isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-50"
-                    }`}
-                  >
-                    <td
-                      className={`p-4 ${
-                        isDarkMode ? "text-gray-300" : "text-gray-900"
-                      }`}
-                      align="center"
-                    >
+                  <tr key={transaction.id} className={`${isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-50"}`}>
+                    <td className={`p-4 ${isDarkMode ? "text-gray-300" : "text-gray-900"}`} align="center">
                       {format(new Date(transaction.created_at), "dd/MM/yyyy")}
                     </td>
-                    <td
-                      className={`p-4 font-medium ${
-                        isDarkMode ? "text-gray-300" : "text-gray-900"
-                      }`}
-                      align="center"
-                    >
+                    <td className={`p-4 font-medium ${isDarkMode ? "text-gray-300" : "text-gray-900"}`} align="center">
                       {transaction.transaction_type}
                     </td>
-                    <td
-                      className={`p-4 font-medium ${
-                        isDarkMode ? "text-gray-300" : "text-gray-900"
-                      }`}
-                      align="center"
-                    >
+                    <td className={`p-4 font-medium ${isDarkMode ? "text-gray-300" : "text-gray-900"}`} align="center">
                       {transaction.transaction_type === "deposit" || transaction.transaction_type === "credit" ? (
-                        <span className="text-green-500">
-                          {transaction.amount.toLocaleString()} USDC
-                        </span>
+                        <span className="text-green-500">{transaction.amount.toLocaleString()} USDC</span>
                       ) : (
-                        <span className="text-red-500">
-                          {transaction.amount.toLocaleString()} USDC
-                        </span>
+                        <span className="text-red-500">{transaction.amount.toLocaleString()} USDC</span>
                       )}
                     </td>
-                    <td
-                      className={`p-4 ${
-                        isDarkMode ? "text-gray-300" : "text-gray-900"
-                      }`}
-                      align="center"
-                    >
+                    <td className={`p-4 ${isDarkMode ? "text-gray-300" : "text-gray-900"}`} align="center">
                       {transaction.description}
                     </td>
-                    <td
-                      className={`p-4 font-mono ${
-                        isDarkMode ? "text-gray-300" : "text-gray-900"
-                      }`}
-                      align="center"
-                    >
+                    <td className={`p-4 font-mono ${isDarkMode ? "text-gray-300" : "text-gray-900"}`} align="center">
                       {transaction.transaction_hash || "-"}
                     </td>
                   </tr>
@@ -452,9 +291,7 @@ export const ClientPayment: React.FC = () => {
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
   const [gasFee] = useState<number>(5); // Fixed gas fee of 5 USDC for withdrawals
-  const [cryptoTransactions, setCryptoTransactions] = useState<
-    CryptoTransaction[]
-  >([]);
+  const [cryptoTransactions, setCryptoTransactions] = useState<CryptoTransaction[]>([]);
   const [isCryptoLoading, setIsCryptoLoading] = useState(true);
   const [isCompletedDeposit, setIsCompletedDeposit] = useState<boolean>(true);
   const [isCancleDeposit, setIsCancelDeposit] = useState(false);
@@ -462,13 +299,7 @@ export const ClientPayment: React.FC = () => {
 
   const walletContext = useWallet();
 
-  const handleWithdrawSubmit = async (
-    amount: number,
-    adminAddress: string,
-    to: string | null,
-    privateKey: string,
-    adminUserId: number
-  ) => {
+  const handleWithdrawSubmit = async (amount: number, adminAddress: string, to: string | null, privateKey: string, adminUserId: number) => {
     setIsCompletedWithdraw(false);
     try {
       if (!walletContext.isConnected) {
@@ -522,11 +353,7 @@ export const ClientPayment: React.FC = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await ticketService.getTickets(
-          undefined,
-          currentPage,
-          limit
-        );
+        const response = await ticketService.getTickets(undefined, currentPage, limit);
         const formattedTickets = response.data.map((ticket: ApiTicket) => ({
           id: ticket.id,
           name: ticket.facebook_name,
@@ -535,11 +362,7 @@ export const ClientPayment: React.FC = () => {
         }));
 
         // Sort tickets based on current sort field and direction
-        const sortedTickets = sortTickets(
-          formattedTickets,
-          sortField,
-          sortDirection
-        );
+        const sortedTickets = sortTickets(formattedTickets, sortField, sortDirection);
 
         setTickets(sortedTickets);
         setTotalPages(response.meta.totalPages);
@@ -569,11 +392,7 @@ export const ClientPayment: React.FC = () => {
     isCompletedDeposit && fetchCryptoTransactions();
   }, [isCompletedDeposit]);
 
-  const sortTickets = (
-    ticketsToSort: Ticket[],
-    field: string,
-    direction: "asc" | "desc"
-  ): Ticket[] => {
+  const sortTickets = (ticketsToSort: Ticket[], field: string, direction: "asc" | "desc"): Ticket[] => {
     return [...ticketsToSort].sort((a, b) => {
       let valueA: any = a[field as keyof Ticket];
       let valueB: any = b[field as keyof Ticket];
@@ -628,12 +447,7 @@ export const ClientPayment: React.FC = () => {
     setIsDepositModalOpen(true);
   };
 
-  const handleDepositSubmit = async (
-    amount: number,
-    adminAddress: string,
-    adminUserId: number,
-    walletAddress: string
-  ) => {
+  const handleDepositSubmit = async (amount: number, adminAddress: string, adminUserId: number, walletAddress: string) => {
     setIsCancelDeposit(false);
     setIsCompletedDeposit(false);
     try {
@@ -647,19 +461,19 @@ export const ClientPayment: React.FC = () => {
         setIsDepositModalOpen(false);
         setIsCompletedDeposit(true);
         showAlert("success", "Deposit successful");
-        setBalance(prev => Number(prev) + Number(amount));
+        setBalance((prev) => Number(prev) + Number(amount));
       } else {
         showAlert("success", "Your deposit will be processed within 5 minutes.");
       }
     } catch (err: any) {
       setIsCancelDeposit(true);
-      console.log({err})
-      if(err.reason == "rejected") {
+      console.log({ err });
+      if (err.reason == "rejected") {
         return;
       } else if (err.reason == "ERC20: transfer amount exceeds balance") {
         showAlert("error", "Insufficient USDC balance in your wallet");
         return;
-      } 
+      }
     }
   };
 
