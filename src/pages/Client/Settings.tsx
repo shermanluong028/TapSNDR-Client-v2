@@ -9,8 +9,15 @@ import { ChangePasswordForm } from "@/components/settings/ChangePasswordForm";
 import { LowBalanceThresholdSetting } from "@/components/settings/LowBalanceThresholdSetting";
 import { ClientLayout } from "./layout";
 
+type Loading = {
+  notifications: boolean;
+};
+
 export const ClientSettingsPage: React.FC = () => {
+  const [loading, setLoading] = React.useState<Loading>({ notifications: false });
+
   const { isDarkMode } = useTheme();
+
   const { user } = useAuth();
 
   return (
@@ -29,9 +36,9 @@ export const ClientSettingsPage: React.FC = () => {
           <ChangePasswordForm defaultEmail={user?.email || ""} />
         </Card>
 
-        <Card>
+        <Card loading={loading.notifications}>
           <div className={`text-xl font-semibold mb-2 ${isDarkMode ? "text-white" : "text-gray-900"}`}>Notifications</div>
-          <LowBalanceThresholdSetting />
+          <LowBalanceThresholdSetting onLoadingChanged={(loading) => setLoading((prev) => ({ ...prev, notifications: loading }))} />
         </Card>
       </div>
     </ClientLayout>

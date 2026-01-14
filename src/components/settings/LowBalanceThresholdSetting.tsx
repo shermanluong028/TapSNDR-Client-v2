@@ -10,10 +10,11 @@ import { settingsService } from "@/services/settings.service";
 
 import { Settings } from "@/types/settings";
 
-interface LowBalanceThresholdSettingProps {}
+interface LowBalanceThresholdSettingProps {
+  onLoadingChanged?: (loading: boolean) => void;
+}
 
-export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProps> = () => {
-  const [loading, setLoading] = useState(false);
+export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProps> = ({ onLoadingChanged }) => {
   const [settings, setSettings] = useState<Settings | null>(null);
 
   const { isDarkMode } = useTheme();
@@ -22,6 +23,7 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
   useEffect(() => {
     (async () => {
       try {
+        onLoadingChanged?.(true);
         const resData = await settingsService.getSettings();
         if (resData.status !== 1) {
           console.error(resData.message);
@@ -30,12 +32,14 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
         setSettings(resData.data[0]);
       } catch (error) {
         console.error(error);
+      } finally {
+        onLoadingChanged?.(false);
       }
     })();
   }, []);
 
   const handleSave = async () => {
-    setLoading(true);
+    onLoadingChanged?.(true);
     try {
       const resData = await settingsService.updateSettings({
         id: settings?.id,
@@ -45,24 +49,20 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
         showAlert("error", resData.message);
         return;
       }
-      showAlert("success", "Updated successfully");
+      showAlert("success", "Saved");
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      onLoadingChanged?.(false);
     }
   };
 
   return (
     <div className="mt-4 space-y-3">
       <div>
-        <Form.Label htmlFor="low-balance-threshold">Low balance threshold (USDC)</Form.Label>
+        <Form.Label>Low balance threshold (USDC)</Form.Label>
         <Form.Control
-          id="low-balance-threshold"
-          name="lowBalanceThreshold"
           type="number"
-          min={0}
-          step={"any"}
           placeholder="e.g. 50"
           value={settings?.low_balance_threshold ?? ""}
           onChange={(e) =>
@@ -82,9 +82,8 @@ export const LowBalanceThresholdSetting: React.FC<LowBalanceThresholdSettingProp
           type="button"
           onClick={handleSave}
           className="px-4 py-2 rounded-lg font-medium text-gray-200 bg-primary-400 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-400 disabled:opacity-50 transition-colors duration-200"
-          disabled={loading}
         >
-          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Save"}
+          Save
         </button>
       </div>
     </div>
