@@ -70,7 +70,7 @@ const PaymentSection: React.FC<{
     return (
     <div className="space-y-8">
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-semibold">Payments</h2>
+        <h2 className="text-2xl font-semibold">Transactions</h2>
         {/* <span className="text-sm text-gray-500">Last updated: 12:13:00 AM</span> */}
       </div>
       <div className="flex gap-4 flex-wrap">
